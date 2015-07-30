@@ -70,7 +70,7 @@
 
             setTimeout(function () {
 
-                document.body.removeChild(document.getElementById('example'));
+                document.body.removeChild(RG.$root);
 
                 if (RG.$cd) {
                     RG.$cd(RG.$res);

@@ -34,7 +34,7 @@
 
         audioBg.src = RG.$audio.bg;
 
-        audioBg.volume = RG.$audio.volume;
+        audioBg.volume = RG.$audio.volume || 1;
 
         audioBg.loop = true;
 
@@ -52,7 +52,7 @@
 
             audioCheer.src = RG.$audio.cheer;
 
-            audioCheer.volume = RG.$audio.volume;
+            audioCheer.volume = RG.$audio.volume || 1;
 
             audioCheer.loop = false;
 
