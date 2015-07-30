@@ -46,5 +46,9 @@
         return this;
     };
 
-    window.RunningGame._observer = new Observer();
+    var RG = window.RunningGame;
+
+    RG.$observer = new Observer();
+
+    RG._hook();
 })();

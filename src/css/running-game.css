@@ -1,0 +1,220 @@
+body {
+    font-family: "\5FAE\8F6F\96C5\9ED1", "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+
+.running-game-point {
+    position: fixed;
+    right: 3%;
+    bottom: 15%;
+    min-width: 25%;
+    height: 44px;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 27px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background: #c2331b;
+    z-index: 1001
+}
+
+.running-game-point-nick {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    width: 100%;
+    height: 14px;
+    font-size: 14px
+}
+
+.running-game-point:after {
+    display: block;
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    border: 6px solid #c2331b;
+    right: 0px;
+    border-left: transparent 6px solid;
+    border-bottom: transparent 6px solid;
+}
+
+.running-game-point-end {
+    display: block;
+    box-sizing: border-box;
+    white-space: nowrap;
+    -webkit-animation: running-game-end 1.5s 0.5s ease both;
+    text-align: left;
+    display: block;
+}
+
+.running-game-point-end:after {
+    display: block;
+    content: '';
+    position: absolute;
+    bottom: -27px;
+    border: 20px solid #c2331b;
+    right: 0px;
+    border-top-width: 18px;
+    border-left: transparent 35px solid;
+    border-bottom: transparent 10px solid;
+}
+
+.running-game-point-end-nick {
+    top: 2px;
+    left: 20px;
+    font-size: 16px;
+    padding-top: 10px;
+}
+
+.running-game-point-end-dis {
+    font-size: 34px;
+}
+
+@-webkit-keyframes running-game-end {
+    0% {
+        width: 30%;
+    }
+    30% {
+        -webkit-transform: rotate(20deg);
+    }
+    40% {
+        -webkit-transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(-20deg);
+        right: 10%;
+        bottom: 75%;
+    }
+    60% {
+        -webkit-transform: rotate(0deg) scale(1.5);
+    }
+    70% {
+        -webkit-transform: rotate(20deg) scale(1.25);
+        width: 80%;
+    }
+    80% {
+        -webkit-transform: rotate(0deg) scale(1);
+    }
+    100% {
+        right: 7%;
+        bottom: 75%;
+        width: 86%;
+        height: 70px;
+        padding: 18px 20px 8px;
+    }
+}
+
+.running-game-motion {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 15%;
+    z-index: 1002;
+    padding: 0 3px;
+    -webkit-box-sizing: border-box;
+}
+
+.running-game-motion-l {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 100%;
+    padding: 10px 3px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -webkit-transform: skew(3deg, 0deg);
+}
+
+.running-game-motion-r {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 100%;
+    padding: 10px 3px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -webkit-transform: scaleX(-1) skew(3deg, 0deg);
+}
+
+.running-game-motion-btn {
+    height: 100%;
+    border: 3px solid #fff;
+    border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: #8a8a8a;
+}
+
+.running-game-motion-btn-grey {
+    background-color: #8a8a8a;
+}
+
+.running-game-motion-btn-l {
+    background-color: #ffba15;
+}
+
+.running-game-motion-btn-r {
+    background-color: #3088e2;
+}
+
+.running-game-ready {
+    position: fixed;
+    left: 0;
+    top: 10%;
+    z-index: 1002;
+    width: 100%;
+    height: 30px;
+    padding-top: 50px;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #ff522e;
+    text-align: center;
+    text-shadow: #fff 1px 1px, #fff 1px -1px, #fff -1px 1px, #fff -1px -1px;
+}
+
+.running-game-music {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    z-index: 1002;
+}
+
+.running-game-finger {
+    position: fixed;
+    bottom: 0;
+    width: 50%;
+    height: 100px;
+    z-index: 1003;
+}
+
+.running-game-top {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    left: 50%;
+    width: 160px;
+    margin-left: -80px;
+    color: #1d81b0;
+    font-size: 49px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: #fff 3px 3px, #fff 3px -3px, #fff -3px 3px, #fff -3px -3px;
+}
+
+.running-game-top-end {
+    color: #ff522e;
+}
+
+.running-game-top-hide {
+    -webkit-transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.running-game-top-second {
+    font-size: 79px;
+}

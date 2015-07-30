@@ -1,11 +1,13 @@
 (function () {
 
+    var RG = window.RunningGame;
+
     /**
      * plug bg
      */
-    window.RunningGame._animateSky = function (p) {
+    RG._animateSky = function () {
 
-        p.plug(function (ctx) {
+        RG.$p.plug(function (ctx) {
 
             var w = window.innerWidth,
                 h = window.innerHeight;

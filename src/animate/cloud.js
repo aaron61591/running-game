@@ -1,13 +1,14 @@
 (function () {
 
-    var EXCUR = [0, 2, 4, 6, 4, 2, 0];
+    var RG = window.RunningGame,
+        EXCUR = [0, 2, 4, 6, 4, 2, 0];
 
     /**
      * plug cloud
      */
-    window.RunningGame._animateCloud = function (p) {
+    RG._animateCloud = function () {
 
-        p.plug(function (ctx, frame) {
+        RG.$p.plug(function (ctx, frame) {
 
             var excur = EXCUR[frame % 7];
 

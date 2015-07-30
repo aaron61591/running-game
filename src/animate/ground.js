@@ -1,14 +1,15 @@
 (function () {
 
-    var EXCUR_X = [2, 0, 3, 6, 11, 13, 15, 19, 17, 15, 10, 8, 3, 0],
+    var RG = window.RunningGame,
+        EXCUR_X = [2, 0, 3, 6, 11, 13, 15, 19, 17, 15, 10, 8, 3, 0],
         EXCUR_Y = [4, 0, -2, -4, -3, -5, 0, 1, -2, -3, -6, -7, -2, 0];
 
     /**
      * plug ground
      */
-    window.RunningGame._animateGround = function (p) {
+    RG._animateGround = function () {
 
-        p.plug(function (ctx, frame) {
+        RG.$p.plug(function (ctx, frame) {
 
             var excurX = EXCUR_X[frame % EXCUR_X.length],
                 excurY = EXCUR_Y[frame % EXCUR_Y.length];

@@ -20,6 +20,7 @@ app.use(require('connect-inject')({
 // 根目录
 var basePath = process.cwd();
 app.use(express.static(basePath));
+app.use(express.static(basePath + '/src'));
 
 app.get('/', function (req, res) {
     res.sendfile('dev/index.html');

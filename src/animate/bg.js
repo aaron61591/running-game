@@ -1,14 +1,16 @@
 (function () {
 
+    var RG = window.RunningGame;
+
     /**
      * plug background
      */
-    window.RunningGame._animateBg = function (p) {
+    RG._animateBg = function () {
 
-        p.plugCard({
+        RG.$p.plugCard({
             x: 0,
             y: window.innerHeight * 0.27,
-            src: 'dev/images/bg.png',
+            src: RG.$opt.img.bg,
             frame: 14,
             debug: true,
             pulse: function () {

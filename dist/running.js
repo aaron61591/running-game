@@ -1,1 +1,0 @@
-!function(){function a(a){c._animateSky(a),c._animateCloud(a),c._animateGround(a),c._animateBg(a),c._animatePersonStart(a)}var b,c=window.RunningGame={};c.start=function(){b=new UPlayer({debug:!0,fps:15}),a(b),b.run(1),c._showStart()}}();

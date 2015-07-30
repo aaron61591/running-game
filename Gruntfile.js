@@ -1,5 +1,7 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
+
+    var version = grunt.file.readJSON('package.json').version;
 
     grunt.initConfig({
         jshint: {
@@ -16,8 +18,37 @@ module.exports = function(grunt) {
         uglify: {
             js: {
                 files: {
-                    'dist/running.js': [
-                        'src/engine.js'
+                    'dist/running-game.js': [
+                        'src/animate/uplayer-0.1.0.js',
+                        'src/engine.js',
+                        'src/point.js',
+                        'src/motion.js',
+                        'src/time.js',
+                        'src/music.js',
+                        'src/scene/loading.js',
+                        'src/scene/start.js',
+                        'src/animate/sky.js',
+                        'src/animate/cloud.js',
+                        'src/animate/ground.js',
+                        'src/animate/bg.js',
+                        'src/animate/person.js',
+                        'src/animate/person-super.js',
+                        'src/animate/person-start.js',
+                        'src/animate/person-end.js',
+                        'src/utils/observer.js'
+                    ]
+                }
+            }
+        },
+        // 压缩 css
+        cssmin: {
+            'add_banner': {
+                options: {
+                    keepSpecialComments: 0 // removing all
+                },
+                files: {
+                    'dist/running-game.css': [
+                        'src/css/running-game.css'
                     ]
                 }
             }
@@ -63,9 +94,13 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            release: {
-                src: 'dist/running.js',
-                dest: 'release/running-' + grunt.file.readJSON('package.json').version + '.js'
+            js: {
+                src: 'dist/running-game.js',
+                dest: 'release/running-game-' + version + '.js'
+            },
+            css: {
+                src: 'dist/running-game.css',
+                dest: 'release/running-game-' + version + '.css'
             }
         },
     });
@@ -75,7 +110,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    grunt.registerTask('default', ['jshint', 'uglify', 'express:dev', 'watch']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'express:dev', 'watch']);
     grunt.registerTask('release', ['copy']);
 };
