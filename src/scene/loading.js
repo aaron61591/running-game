@@ -20,7 +20,7 @@
 
         RG.$loading.plugCard({
             zIndex: 0,
-            src: RG.$img.loading,
+            src: RG.$imgPath + 'loading.png',
             frame: 11,
             pulse: function (ctx) {
 

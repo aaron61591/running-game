@@ -3,7 +3,7 @@
     var RG = window.RunningGame,
         music = RG.$music = {},
         audioBg = {},
-        audioCheer = {};
+        audioOver = {};
 
     /**
      * initialize music
@@ -42,21 +42,21 @@
     };
 
     /**
-     * play cheer music
+     * play over music
      */
-    music.playCheer = function () {
+    music.playOver = function () {
 
         if (!_disable()) {
 
-            audioCheer = document.createElement('audio');
+            audioOver = document.createElement('audio');
 
-            audioCheer.src = RG.$audio.cheer;
+            audioOver.src = RG.$audio.over;
 
-            audioCheer.volume = RG.$audio.volume || 1;
+            audioOver.volume = RG.$audio.volume || 1;
 
-            audioCheer.loop = false;
+            audioOver.loop = false;
 
-            audioCheer.play();
+            audioOver.play();
         }
     };
 
@@ -98,7 +98,7 @@
 
         music.playBg();
 
-        music.ele.style.background = 'url("' + RG.$opt.img.musicOn + '") 10px 10px no-repeat';
+        music.ele.style.background = 'url(' + RG.$imgPath + 'music-on.png) 10px 10px no-repeat';
         music.ele.style.backgroundSize = '30px';
     }
 
@@ -124,7 +124,7 @@
 
         music.stopBg();
 
-        music.ele.style.background = 'url("' + RG.$opt.img.musicOff + '") 10px 10px no-repeat';
+        music.ele.style.background = 'url(' + RG.$imgPath + 'music-off.png) 10px 10px no-repeat';
         music.ele.style.backgroundSize = '30px';
     }
 })();

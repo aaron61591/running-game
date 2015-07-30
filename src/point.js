@@ -60,7 +60,7 @@
 
             dis.className = pre + '-end-dis';
 
-            res.innerText = RG.$opt.msg.result;
+            res.innerText = RG.$msg.result;
         }, 1000);
     };
 
@@ -71,7 +71,7 @@
 
         nick = _div();
 
-        nick.innerText = RG.$opt.msg.nick;
+        nick.innerText = RG.$msg.nick;
 
         nick.className = pre + '-nick';
 

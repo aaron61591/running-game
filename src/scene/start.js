@@ -26,11 +26,11 @@
 
         ready = RG._div();
 
-        ready.innerText = RG.$opt.msg.ready;
+        ready.innerText = RG.$msg.ready;
 
         ready.className = pre + '-ready';
 
-        ready.style.background = 'url("' + RG.$opt.img.ready + '") 50% -200px / 225px 245px no-repeat';
+        ready.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% -200px / 225px 245px no-repeat';
 
         RG._insert(ready);
     }
@@ -51,11 +51,11 @@
             if (++i % 2) {
                 finger.style.left = 0;
                 finger.style.right = 'initial';
-                finger.style.background = 'url("' + RG.$opt.img.ready + '") 50% 0% / 225px 245px no-repeat';
+                finger.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% 0% / 225px 245px no-repeat';
             } else {
                 finger.style.left = 'initial';
                 finger.style.right = 0;
-                finger.style.background = 'url("' + RG.$opt.img.ready + '") 50% -100px / 225px 245px no-repeat';
+                finger.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% -100px / 225px 245px no-repeat';
             }
 
             RG._motionChange();

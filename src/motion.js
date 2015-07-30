@@ -41,7 +41,7 @@
      */
     RG._getGrade = function () {
 
-        var m = RG.$opt.conf.grade,
+        var m = RG.$conf.grade,
             i = m.length,
             comboGrade;
 
@@ -146,7 +146,7 @@
      */
     function _btnBg(e) {
 
-        e.style.background = '#8a8a8a url("' + RG.$opt.img.step + '") no-repeat center';
+        e.style.background = '#8a8a8a url(' + RG.$imgPath + 'step.png) no-repeat center';
         e.style.backgroundSize = '22px 43px';
     }
 
@@ -196,9 +196,6 @@
         if (cur !== type) {
             if (type === 1) {
                 ++combo;
-                if (window.navigator.vibrate) {
-                    window.navigator.vibrate(20);
-                }
             }
             cur = type;
         }

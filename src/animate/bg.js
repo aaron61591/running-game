@@ -10,7 +10,7 @@
         RG.$p.plugCard({
             x: 0,
             y: window.innerHeight * 0.27,
-            src: RG.$opt.img.bg,
+            src: RG.$imgPath + 'bg.png',
             frame: 14,
             debug: true,
             pulse: function () {

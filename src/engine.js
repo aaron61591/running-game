@@ -66,7 +66,7 @@
             RG.$point.end();
 
             RG.$music.stopBg();
-            RG.$music.playCheer();
+            RG.$music.playOver();
 
             setTimeout(function () {
 
@@ -89,19 +89,19 @@
                 RG.$grade = RG._getGrade();
                 console.log('grade: ', RG.$grade);
 
-                if (RG.$grade === RG.$conf.grade.length && lastGrade !== RG.$grade) {
+                if (RG.$grade === 4 && lastGrade !== RG.$grade) {
 
                     RG.$p.unplug('person');
                     RG._animatePersonSuper();
                 }
 
-                if (lastGrade === RG.$conf.grade.length && lastGrade !== RG.$grade) {
+                if (lastGrade === 4 && lastGrade !== RG.$grade) {
 
                     RG.$p.unplug('person-super');
                     RG._animatePerson();
                 }
 
-                RG.$p.opt.fps = RG.$opt.conf.fps[RG.$grade - 1];
+                RG.$p.opt.fps = RG.$conf.fps[RG.$grade - 1];
                 lastGrade = RG.$grade;
             }
         });
@@ -145,26 +145,83 @@
     function _init(opt, cb) {
 
         RG.$opt = opt || {};
-        RG.$img = RG.$opt.img;
-        RG.$msg = RG.$opt.msg;
-        RG.$conf = RG.$opt.conf;
-        RG.$audio = RG.$opt.audio;
+
+        _initImage();
+
+        _initMsg();
+
+        _initConf();
+
+        _initAudio();
+
+        _initCSS();
+
         RG.$cd = cb;
         RG.$grade = 1;
         RG.$res = 0;
         RG.$pre = 'running-game';
-
-        RG.$css = document.createElement('link');
-        RG.$css.rel = 'stylesheet';
-        RG.$css.type = 'text/css';
-        RG.$css.href = RG.$opt.css || 'http://img.ucweb.com/s/uae/g/01/release/running-game-0.1.0.css';
-        document.body.appendChild(RG.$css);
 
         RG.$root = RG._div();
         RG.$root.id = RG.$opt.id;
         RG.$root.style.zIndex = 1000;
 
         document.body.appendChild(RG.$root);
+    }
+
+    /**
+     * initialize image
+     */
+    function _initImage() {
+
+        RG.$imgPath = RG.$opt.imgPath || 'images/';
+    }
+
+    /**
+     * initialize message
+     */
+    function _initMsg() {
+
+        var m = RG.$msg = RG.$opt.msg || {};
+        m.ready = m.ready || 'click button to start';
+        m.result = m.result || 'cool! u ran ';
+        m.nick = m.nick || 'UU';
+    }
+
+    /**
+     * initialize conf
+     */
+    function _initConf() {
+
+        var c = RG.$conf = RG.$opt.conf || {};
+
+        c.grade = c.grade || [0, 1, 3, 5, 7];
+        c.point = c.point || [3, 4, 5, 6, 10];
+        c.fps = c.fps || [10, 20, 30, 40, 70];
+    }
+
+    /**
+     * initialize audio
+     */
+    function _initAudio() {
+
+        RG.$audio = RG.$opt.audio || {
+            bg: 'http://img.ucweb.com/s/uae/g/01/release/audio/game_bg.mp3',
+            over: 'http://img.ucweb.com/s/uae/g/01/release/audio/gameover.mp3'
+        };
+    }
+
+    /**
+     * initialize css
+     */
+    function _initCSS() {
+
+        var c = RG.$css = document.createElement('link');
+
+        c.rel = 'stylesheet';
+        c.type = 'text/css';
+        c.href = RG.$opt.css || 'http://img.ucweb.com/s/uae/g/01/release/css/running-game-0.1.0.css';
+
+        document.body.appendChild(c);
     }
 
     /**
