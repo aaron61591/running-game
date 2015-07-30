@@ -102,7 +102,7 @@ module.exports = function (grunt) {
                 src: 'dist/running-game.css',
                 dest: 'release/running-game-' + version + '.css'
             }
-        },
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-copy');

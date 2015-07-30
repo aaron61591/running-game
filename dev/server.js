@@ -21,6 +21,7 @@ app.use(require('connect-inject')({
 var basePath = process.cwd();
 app.use(express.static(basePath));
 app.use(express.static(basePath + '/src'));
+app.use(express.static(basePath + '/release'));
 
 app.get('/', function (req, res) {
     res.sendfile('dev/index.html');
