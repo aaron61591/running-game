@@ -157,7 +157,7 @@
         RG.$css = document.createElement('link');
         RG.$css.rel = 'stylesheet';
         RG.$css.type = 'text/css';
-        RG.$css.href = RG.$opt.css;
+        RG.$css.href = RG.$opt.css || 'http://img.ucweb.com/s/uae/g/01/release/running-game-0.1.0.css';
         document.body.appendChild(RG.$css);
 
         RG.$root = RG._div();
