@@ -8,6 +8,7 @@
     RG._animatePerson = function () {
 
         RG.$p.plugCard({
+            zIndex: 1000,
             hash: 'person',
             src: RG.$imgPath + 'person.png',
             frame: [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1],

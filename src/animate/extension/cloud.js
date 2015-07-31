@@ -4,20 +4,17 @@
         EXCUR = [0, 2, 4, 6, 4, 2, 0];
 
     /**
-     * plug cloud
+     * extension cloud
      */
-    RG._animateCloud = function () {
+    RG.$extCloud = function (ctx, frame) {
 
-        RG.$p.plug(function (ctx, frame) {
+        var excur = EXCUR[frame % 7];
 
-            var excur = EXCUR[frame % 7];
+        ctx.fillStyle = ctx.strokeStyle = 'white';
 
-            ctx.fillStyle = ctx.strokeStyle = 'white';
-
-            _cloud1(ctx, excur);
-            _cloud2(ctx, excur);
-            _cloud3(ctx, excur);
-        });
+        _cloud1(ctx, excur);
+        _cloud2(ctx, excur);
+        _cloud3(ctx, excur);
     };
 
     /**

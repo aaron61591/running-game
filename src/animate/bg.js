@@ -8,6 +8,7 @@
     RG._animateBg = function () {
 
         RG.$p.plugCard({
+            zIndex: 1000,
             x: 0,
             y: window.innerHeight * 0.27,
             src: RG.$imgPath + 'bg.png',

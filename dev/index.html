@@ -21,21 +21,30 @@
     <script type="text/javascript" src="src/music.js"></script>
     <script type="text/javascript" src="src/scene/loading.js"></script>
     <script type="text/javascript" src="src/scene/start.js"></script>
-    <script type="text/javascript" src="src/animate/sky.js"></script>
-    <script type="text/javascript" src="src/animate/cloud.js"></script>
-    <script type="text/javascript" src="src/animate/ground.js"></script>
     <script type="text/javascript" src="src/animate/bg.js"></script>
     <script type="text/javascript" src="src/animate/person.js"></script>
     <script type="text/javascript" src="src/animate/person-super.js"></script>
     <script type="text/javascript" src="src/animate/person-start.js"></script>
     <script type="text/javascript" src="src/animate/person-end.js"></script>
+    <script type="text/javascript" src="src/animate/extension/cloud.js"></script>
+    <script type="text/javascript" src="src/animate/extension/ground.js"></script>
+    <script type="text/javascript" src="src/animate/extension/sky.js"></script>
     <script type="text/javascript" src="src/utils/observer.js"></script>
-    <!-- // <script type="text/javascript" src="release/running-game-0.1.0.js"></script> -->
+    <!-- <script type="text/javascript" src="release/running-game-0.1.0.js"></script> -->
     <script type="text/javascript">
     window.run = function() {
 
         window.RunningGame.start({
-            imgPath: 'images/'
+            imgPath: 'images/',
+            extension: [
+                'Sky',
+                'Cloud',
+                'Ground',
+                function(ctx, frame) {
+
+                    console.log(frame);
+                }
+            ],
         }, function(point) {
 
             console.log('cool!u ran: ', point);

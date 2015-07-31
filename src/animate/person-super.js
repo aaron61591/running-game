@@ -8,6 +8,7 @@
     RG._animatePersonSuper = function () {
 
         RG.$p.plugCard({
+            zIndex: 1001,
             hash: 'person-super',
             src: RG.$imgPath + 'person.png',
             frame: [0, 1, 2, 7, 5, 2, 1],

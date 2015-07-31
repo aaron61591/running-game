@@ -3,19 +3,16 @@
     var RG = window.RunningGame;
 
     /**
-     * plug bg
+     * extension bg
      */
-    RG._animateSky = function () {
+    RG.$extSky = function (ctx) {
 
-        RG.$p.plug(function (ctx) {
+        var w = window.innerWidth,
+            h = window.innerHeight;
 
-            var w = window.innerWidth,
-                h = window.innerHeight;
+        _bg(ctx, w, h);
 
-            _bg(ctx, w, h);
-
-            _sun(ctx, w, h);
-        });
+        _sun(ctx, w, h);
     };
 
     /**

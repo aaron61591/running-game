@@ -22,18 +22,30 @@
 
         RG.$music.init();
 
-        RG.$p = new UPlayer({
-            // debug: true,
-            fps: 10
-        });
-
-        _plug();
-
-        RG.$p.run(1);
+        _runPlayer();
 
         RG._ready();
 
         RG.$point.init();
+    }
+
+    /**
+     * run plauery
+     */
+    function _runPlayer() {
+
+        RG.$p = new UPlayer({
+            fps: 10
+        });
+
+        _initExtension();
+
+        RG._animateBg();
+        RG._animatePersonStart();
+
+        RG._insert(RG.$p.canvas);
+
+        RG.$p.run(1);
     }
 
     /**
@@ -154,8 +166,6 @@
 
         _initAudio();
 
-        _initCSS();
-
         RG.$cd = cb;
         RG.$grade = 1;
         RG.$res = 0;
@@ -169,11 +179,62 @@
     }
 
     /**
+     * initialize extension
+     */
+    function _initExtension() {
+
+        var ext = RG.$opt.extension || [];
+
+        RG.$ext = {
+            'Sky': {
+                src: ''
+            },
+            'Cloud': {
+                src: ''
+            },
+            'Ground': {
+                src: ''
+            }
+        };
+
+        var i = 0;
+
+        while (i < ext.length) {
+            if (typeof ext[i] === 'string' && RG.$ext[ext[i]]) {
+                RG.$p.plug({
+                    zIndex: i,
+                    render: RG['$ext' + ext[i]]
+                });
+            }
+
+            if (typeof ext[i] === 'function') {
+                RG.$p.plug({
+                    zIndex: i,
+                    render: ext[i]
+                });
+            }
+
+            ++i;
+        }
+    }
+
+    /**
      * initialize image
      */
     function _initImage() {
 
         RG.$imgPath = RG.$opt.imgPath || 'images/';
+
+        RG.$img = [
+            'loading.png',
+            'bg.png',
+            'end.png',
+            'music-on.png',
+            'music-off.png',
+            'person.png',
+            'ready.png',
+            'start.png'
+        ];
     }
 
     /**
@@ -208,34 +269,6 @@
             bg: 'http://img.ucweb.com/s/uae/g/01/release/audio/game_bg.mp3',
             over: 'http://img.ucweb.com/s/uae/g/01/release/audio/gameover.mp3'
         };
-    }
-
-    /**
-     * initialize css
-     */
-    function _initCSS() {
-
-        var c = RG.$css = document.createElement('link');
-
-        c.rel = 'stylesheet';
-        c.type = 'text/css';
-        c.href = RG.$opt.css || 'http://img.ucweb.com/s/uae/g/01/release/css/running-game-0.1.0.css';
-
-        document.body.appendChild(c);
-    }
-
-    /**
-     * setup plugins
-     */
-    function _plug() {
-
-        RG._animateSky();
-        RG._animateCloud();
-        RG._animateGround();
-        RG._animateBg();
-        RG._animatePersonStart();
-
-        RG._insert(RG.$p.canvas);
     }
 
     /**

@@ -8,6 +8,7 @@
     window.RunningGame._animatePersonEnd = function () {
 
         RG.$p.plugCard({
+            zIndex: 1001,
             src: RG.$imgPath + 'end.png',
             frame: 1,
             scale: 0.5,

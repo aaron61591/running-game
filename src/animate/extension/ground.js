@@ -5,18 +5,15 @@
         EXCUR_Y = [4, 0, -2, -4, -3, -5, 0, 1, -2, -3, -6, -7, -2, 0];
 
     /**
-     * plug ground
+     * extension ground
      */
-    RG._animateGround = function () {
+    RG.$extGround = function (ctx, frame) {
 
-        RG.$p.plug(function (ctx, frame) {
+        var excurX = EXCUR_X[frame % EXCUR_X.length],
+            excurY = EXCUR_Y[frame % EXCUR_Y.length];
 
-            var excurX = EXCUR_X[frame % EXCUR_X.length],
-                excurY = EXCUR_Y[frame % EXCUR_Y.length];
-
-            _ground(ctx, excurY);
-            _lawn(ctx, excurX, excurY);
-        });
+        _ground(ctx, excurY);
+        _lawn(ctx, excurX, excurY);
     };
 
     /**
