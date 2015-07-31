@@ -102,7 +102,7 @@
 
         c.rel = 'stylesheet';
         c.type = 'text/css';
-        c.href = RG.$opt.css || 'http://img.ucweb.com/s/uae/g/01/release/css/running-game-0.1.0.css';
+        c.href = RG.$opt.css || RG.$path + 'css/running-game-0.1.0.css';
 
         if (c.complete) {
             _loadedCSS();
@@ -128,7 +128,6 @@
      */
     function _loaded() {
 
-        console.log('loaded');
         if (++finish === RG.$img.length - 1 + _needLoadCSS()) {
             RG.$observer.emit('loaded');
 

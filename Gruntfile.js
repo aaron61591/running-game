@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'dist/running-game.css': [
-                        'src/css/running-game.css'
+                        'css/running-game.css'
                     ]
                 }
             }

@@ -5,6 +5,8 @@
      */
     var RG = window.RunningGame = {};
 
+    RG.$ext = ['Sky', 'Cloud', 'Ground'];
+
     /**
      * ready to start
      */
@@ -158,6 +160,8 @@
 
         RG.$opt = opt || {};
 
+        RG.$path = 'http://img.ucweb.com/s/uae/g/01/running_game/';
+
         _initImage();
 
         _initMsg();
@@ -183,24 +187,11 @@
      */
     function _initExtension() {
 
-        var ext = RG.$opt.extension || [];
-
-        RG.$ext = {
-            'Sky': {
-                src: ''
-            },
-            'Cloud': {
-                src: ''
-            },
-            'Ground': {
-                src: ''
-            }
-        };
-
-        var i = 0;
+        var ext = RG.$opt.extension || RG.$ext,
+            i = 0;
 
         while (i < ext.length) {
-            if (typeof ext[i] === 'string' && RG.$ext[ext[i]]) {
+            if (typeof ext[i] === 'string' && RG.$ext.indexOf(ext[i]) !== -1) {
                 RG.$p.plug({
                     zIndex: i,
                     render: RG['$ext' + ext[i]]
@@ -223,7 +214,7 @@
      */
     function _initImage() {
 
-        RG.$imgPath = RG.$opt.imgPath || 'images/';
+        RG.$imgPath = RG.$opt.imgPath || RG.$path + 'images/';
 
         RG.$img = [
             'loading.png',
@@ -266,8 +257,8 @@
     function _initAudio() {
 
         RG.$audio = RG.$opt.audio || {
-            bg: 'http://img.ucweb.com/s/uae/g/01/release/audio/game_bg.mp3',
-            over: 'http://img.ucweb.com/s/uae/g/01/release/audio/gameover.mp3'
+            bg: RG.$path + 'audio/bg.mp3',
+            over: RG.$path + 'audio/over.mp3'
         };
     }
 

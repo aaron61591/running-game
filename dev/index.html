@@ -13,12 +13,28 @@
 
 <body>
     <button onclick="run()">run</button>
-    <script type="text/javascript" src="release/running-game-0.1.0.js"></script>
+    <script type="text/javascript" src="src/animate/uplayer-0.1.0.js"></script>
+    <script type="text/javascript" src="src/engine.js"></script>
+    <script type="text/javascript" src="src/point.js"></script>
+    <script type="text/javascript" src="src/motion.js"></script>
+    <script type="text/javascript" src="src/time.js"></script>
+    <script type="text/javascript" src="src/music.js"></script>
+    <script type="text/javascript" src="src/scene/loading.js"></script>
+    <script type="text/javascript" src="src/scene/start.js"></script>
+    <script type="text/javascript" src="src/animate/bg.js"></script>
+    <script type="text/javascript" src="src/animate/person.js"></script>
+    <script type="text/javascript" src="src/animate/person-super.js"></script>
+    <script type="text/javascript" src="src/animate/person-start.js"></script>
+    <script type="text/javascript" src="src/animate/person-end.js"></script>
+    <script type="text/javascript" src="src/animate/extension/cloud.js"></script>
+    <script type="text/javascript" src="src/animate/extension/ground.js"></script>
+    <script type="text/javascript" src="src/animate/extension/sky.js"></script>
+    <script type="text/javascript" src="src/utils/observer.js"></script>
+    <!-- <script type="text/javascript" src="release/running-game-0.1.0.js"></script> -->
     <script type="text/javascript">
     window.run = function() {
 
         window.RunningGame.start({
-            imgPath: 'images/',
             extension: [
                 'Sky',
                 'Cloud',
@@ -26,7 +42,6 @@
                 function(ctx, frame) {
 
                     // TODO custom animation
-                    console.log(frame);
                 }
             ],
         }, function(point) {
