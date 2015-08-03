@@ -1,7 +1,7 @@
 (function () {
 
     var RG = window.RunningGame,
-        time = RG._time = {},
+        time = RG.$time = {},
         pre, top, second, gameTime;
 
     /**

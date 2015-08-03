@@ -5,16 +5,130 @@
      */
     var RG = window.RunningGame = {};
 
+    /**
+     * extension animation
+     */
     RG.$ext = ['Sky', 'Cloud', 'Ground'];
 
     /**
      * ready to start
      */
-    RG.start = function (opt, cb) {
+    RG.start = function (opt, cb, round) {
 
-        _init(opt, cb);
+        _init(opt, cb, round);
 
         RG._loading();
+    };
+
+    /**
+     * observer ready hook
+     */
+    RG._hook = function () {
+
+        var last = 0;
+
+        RG.$observer.on('loaded', function () {
+
+            _loaded();
+        });
+
+        RG.$observer.on('start', function () {
+
+            RG.$time.init();
+
+            _start();
+        });
+
+        RG.$observer.on('end', function () {
+
+            RG.$p.unplug('person');
+            RG.$p.unplug('person-super');
+            RG._animatePersonEnd(RG.$p);
+            RG.$p.stop();
+            RG.$p.run(1);
+
+            RG.$point.end();
+
+            RG.$music.stopBg();
+            RG.$music.playOver();
+
+            setTimeout(function () {
+
+                document.body.removeChild(RG.$root);
+
+                if (RG.$cb) {
+                    RG.$cb(RG.$res);
+                }
+            }, RG.$opt.endTime || 3000);
+        });
+
+        RG.$observer.on('round', function () {
+
+            var cur = +new Date(),
+                g;
+
+            if (cur - last > 1000) {
+                last = cur;
+
+                g = RG._getGrade();
+
+                console.log('grade: ', g);
+
+                if (g === 4 && RG.$lastGrade === 5) {
+                    RG.$p.unplug('person');
+                    RG._animatePersonSuper();
+                }
+
+                if (RG.$lastGrade === 5 && g === 4) {
+                    RG.$p.unplug('person-super');
+                    RG._animatePerson();
+                }
+
+                RG.$p.opt.fps = RG.$conf.fps[g - 1];
+
+                if (RG.$round) {
+                    RG.$round(RG.$lastGrade, g);
+                }
+
+                RG.$lastGrade = g;
+            }
+        });
+    };
+
+    /**
+     * create div
+     */
+    RG._div = function () {
+
+        return document.createElement('div');
+    };
+
+    /**
+     * create span
+     */
+    RG._span = function () {
+
+        return document.createElement('span');
+    };
+
+    /**
+     * insert
+     */
+    RG._insert = function (e, f) {
+
+        if (f) {
+            f.appendChild(e);
+        } else {
+            RG.$root.appendChild(e);
+        }
+    };
+
+    /**
+     * remove
+     */
+    RG._remove = function (e) {
+
+        RG.$root.removeChild(e);
     };
 
     /**
@@ -40,7 +154,7 @@
             fps: 10
         });
 
-        _initExtension();
+        _extension();
 
         RG._animateBg();
         RG._animatePersonStart();
@@ -51,116 +165,15 @@
     }
 
     /**
-     * observer ready hook
-     */
-    RG._hook = function () {
-
-        var last = 0;
-
-        RG.$observer.on('loaded', function () {
-
-            _loaded();
-        });
-
-        RG.$observer.on('start', function () {
-
-            RG._time.init();
-
-            _start();
-        });
-
-        RG.$observer.on('end', function () {
-
-            RG.$p.unplug('person');
-            RG.$p.unplug('person-super');
-            RG._animatePersonEnd(RG.$p);
-            RG.$p.stop();
-            RG.$p.run(1);
-
-            RG.$point.end();
-
-            RG.$music.stopBg();
-            RG.$music.playOver();
-
-            setTimeout(function () {
-
-                document.body.removeChild(RG.$root);
-
-                if (RG.$cd) {
-                    RG.$cd(RG.$res);
-                }
-            }, RG.$opt.endTime || 3000);
-        });
-
-        RG.$observer.on('round', function () {
-
-            var cur = +new Date(),
-                lastGrade;
-
-            if (cur - last > 1000) {
-                last = cur;
-
-                RG.$grade = RG._getGrade();
-                console.log('grade: ', RG.$grade);
-
-                if (RG.$grade === 4 && lastGrade !== RG.$grade) {
-
-                    RG.$p.unplug('person');
-                    RG._animatePersonSuper();
-                }
-
-                if (lastGrade === 4 && lastGrade !== RG.$grade) {
-
-                    RG.$p.unplug('person-super');
-                    RG._animatePerson();
-                }
-
-                RG.$p.opt.fps = RG.$conf.fps[RG.$grade - 1];
-                lastGrade = RG.$grade;
-            }
-        });
-    };
-
-    /**
-     * create div
-     */
-    RG._div = function () {
-
-        return document.createElement('div');
-    };
-
-    /**
-     * create span
-     */
-    RG._span = function () {
-
-        return document.createElement('span');
-    };
-
-    /**
-     * insert
-     */
-    RG._insert = function (e) {
-
-        RG.$root.appendChild(e);
-    };
-
-    /**
-     * remove
-     */
-    RG._remove = function (e) {
-
-        RG.$root.removeChild(e);
-    };
-
-    /**
      * initialize props
      */
-    function _init(opt, cb) {
+    function _init(opt, cb, round) {
 
         RG.$opt = opt || {};
 
         RG.$path = 'http://img.ucweb.com/s/uae/g/01/running_game/';
+
+        _initExt();
 
         _initImage();
 
@@ -170,41 +183,58 @@
 
         _initAudio();
 
-        RG.$cd = cb;
+        RG.$cb = cb;
+        RG.$round = round;
         RG.$grade = 1;
         RG.$res = 0;
         RG.$pre = 'running-game';
 
         RG.$root = RG._div();
-        RG.$root.id = RG.$opt.id;
+        RG.$root.id = RG.$opt.id || '';
         RG.$root.style.zIndex = 1000;
 
-        document.body.appendChild(RG.$root);
+        RG._insert(RG.$root, document.body);
     }
 
     /**
-     * initialize extension
+     * initialize extention animation
      */
-    function _initExtension() {
+    function _initExt() {
 
-        var ext = RG.$opt.extension || RG.$ext,
+        var ep = RG.$extPlugin = [],
+            ext = RG.$opt.extension || RG.$ext,
             i = 0;
 
         while (i < ext.length) {
             if (typeof ext[i] === 'string' && RG.$ext.indexOf(ext[i]) !== -1) {
-                RG.$p.plug({
+                ep.push({
                     zIndex: i,
-                    render: RG['$ext' + ext[i]]
+                    extName: ext[i]
+                        // render: RG['$ext' + ext[i]]
                 });
             }
 
             if (typeof ext[i] === 'function') {
-                RG.$p.plug({
+                ep.push({
                     zIndex: i,
                     render: ext[i]
                 });
             }
 
+            ++i;
+        }
+
+    }
+
+    /**
+     * initialize extension
+     */
+    function _extension() {
+
+        var i = 0;
+
+        while (i < RG.$extPlugin.length) {
+            RG.$p.plug(RG.$extPlugin[i]);
             ++i;
         }
     }

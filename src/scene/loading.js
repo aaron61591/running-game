@@ -1,13 +1,25 @@
 (function () {
 
     var RG = window.RunningGame,
-        needLoadCSS = true,
         finish = 0;
 
     /**
      * loading scene
      */
     RG._loading = function () {
+
+        _runAnimation();
+
+        UPlayer.preImage(RG.$imgPath + RG.$img[0], function () {
+
+            _load();
+        });
+    };
+
+    /**
+     * run loading animation
+     */
+    function _runAnimation() {
 
         RG.$loading = new UPlayer({
             fps: 30
@@ -17,23 +29,8 @@
 
 
         var w = window.innerWidth,
-            h = window.innerHeight;
-
-        RG.$loading.plugCard({
-            zIndex: 0,
-            src: RG.$imgPath + 'loading.png',
-            frame: 11,
-            pulse: function (ctx) {
-
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(0, 0, w, h);
-
-                this.x = w / 2 - this.img.width / this.frame / 2;
-                this.y = h / 2 - this.img.height;
-            }
-        });
-
-        var num = 0;
+            h = window.innerHeight,
+            num = 0;
 
         RG.$loading.plug({
             zIndex: 1,
@@ -59,11 +56,20 @@
 
         RG.$loading.run();
 
-        UPlayer.preImage(RG.$imgPath + RG.$img[0], function () {
+        RG.$loading.plugCard({
+            zIndex: 0,
+            src: RG.$imgPath + 'loading.png',
+            frame: 11,
+            pulse: function (ctx) {
 
-            _load();
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, w, h);
+
+                this.x = w / 2 - this.img.width / this.frame / 2;
+                this.y = h / 2 - this.img.height;
+            }
         });
-    };
+    }
 
     /**
      * load game resource
@@ -72,9 +78,9 @@
 
         finish = 0;
 
-        _loadCSS();
+        _loadExt();
 
-        _loadImg();
+        _loadCSS();
     }
 
     /**
@@ -105,22 +111,43 @@
         c.href = RG.$opt.css || RG.$path + 'css/running-game-0.1.0.css';
 
         if (c.complete) {
-            _loadedCSS();
+            _loadImg();
         }
 
-        c.onload = _loadedCSS;
+        c.onload = _loadImg;
 
-        document.body.appendChild(c);
+        RG._insert(c, document.body);
     }
 
     /**
-     * css loaded
+     * initialize extention
      */
-    function _loadedCSS() {
+    function _loadExt() {
 
-        _loaded();
+        var i = RG.$extPlugin.length;
 
-        needLoadCSS = false;
+        while (i--) {
+            if (RG.$extPlugin[i].extName) {
+                _loadScript(RG.$extPlugin[i]);
+            }
+        }
+    }
+
+    /**
+     * load extention script
+     */
+    function _loadScript(ext) {
+
+        var s = document.createElement('script');
+
+        s.onload = function () {
+
+            ext.render = RG['$ext' + ext.extName];
+        };
+
+        s.src = RG.$path + 'js/extension/' + ext.extName.toLowerCase() + '.js';
+
+        RG._insert(s, document.body);
     }
 
     /**
@@ -128,22 +155,11 @@
      */
     function _loaded() {
 
-        if (++finish === RG.$img.length - 1 + _needLoadCSS()) {
+        if (++finish === RG.$img.length - 1) {
             RG.$observer.emit('loaded');
 
-            setTimeout(function () {
-
-                RG.$loading.stop();
-                RG._remove(RG.$loading.canvas);
-            }, 100);
+            RG.$loading.stop();
+            RG._remove(RG.$loading.canvas);
         }
-    }
-
-    /**
-     * whether need load css
-     */
-    function _needLoadCSS() {
-
-        return needLoadCSS ? 1 : 0;
     }
 })();
