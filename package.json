@@ -1,6 +1,6 @@
 {
     "name": "running-game",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Running Game Base on UPlayer",
     "devDependencies": {
         "grunt": "~0.4.2",
