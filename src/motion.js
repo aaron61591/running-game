@@ -1,58 +1,56 @@
 (function () {
 
     var RG = window.RunningGame,
-        pre,
-        btnLeft, btnRight,
-        cur, combo, curGrade,
-        count;
+        motion = RG.$motion = {},
+        pre = '',
+        btnL = {},
+        btnR = {},
+        curType = -1,
+        curGrade = 0,
+        count = 0;
+
+    /**
+     * game combo
+     */
+    motion.combo = 0;
 
     /**
      * render motion button
      */
-    RG._initMotion = function () {
+    motion.init = function () {
 
-        var e = RG._div();
+        _initProp();
 
-        _init();
-
-        e.className = pre;
-
-        _motionLeft(e);
-        _motionRight(e);
-
-        RG._insert(e);
+        _initDom();
     };
 
     /**
-     * change motion hightlight
+     * run step
      */
-    RG._motionChange = function () {
+    motion.step = function (t) {
 
-        ++count;
-        if (count % 2) {
-            _hightlightLeft();
-        } else {
-            _hightlightRight();
-        }
+        _handler(t);
+
+        hightlight(t);
     };
 
     /**
      * getGrade calculated by running
      */
-    RG._getGrade = function () {
+    motion.getGrade = function () {
 
         var m = RG.$conf.grade,
             i = m.length,
             comboGrade;
 
         while (i--) {
-            if (combo >= m[i]) {
+            if (motion.combo >= m[i]) {
                 comboGrade = i + 1;
                 break;
             }
         }
 
-        combo = 0;
+        motion.combo = 0;
 
         if (comboGrade > curGrade) {
             if (comboGrade - curGrade >= 2) {
@@ -72,73 +70,62 @@
     /**
      * initialize props
      */
-    function _init() {
+    function _initProp() {
 
-        pre = RG.$pre + '-motion';
+        pre = RG.PRE + '-motion';
         count = 0;
-        combo = 0;
         curGrade = 0;
-        cur = -1;
+        curType = -1;
+
+        motion.combo = 0;
     }
 
     /**
-     * render left motion
+     * initialize dom
      */
-    function _motionLeft(e) {
+    function _initDom() {
 
-        var s = RG._div();
+        var e = RG._div();
 
-        s.className = pre + '-l';
+        e.className = pre;
 
-        _btnLeft(s);
+        _initBtn(e, 0);
+        _initBtn(e, 1);
+
+        RG._insert(e);
+    }
+
+    /**
+     * initialize step btn
+     */
+    function _initBtn(e, t) {
+
+        var s = RG._div(),
+            btn = RG._div(),
+            suff;
+
+        if (t) {
+            btnR = btn;
+            suff = '-r';
+        } else {
+            btnL = btn;
+            suff = '-l';
+        }
+
+        s.className = pre + suff;
+
+        btn.className = pre + '-btn ' + pre + '-btn' + suff;
+
+        _btnBg(btn);
+
+        btn.addEventListener('touchstart', function () {
+
+            motion.step(t);
+        });
+
+        s.appendChild(btn);
 
         e.appendChild(s);
-    }
-
-    /**
-     * render left btn
-     */
-    function _btnLeft(e) {
-
-        btnLeft = RG._div();
-
-        btnLeft.className = pre + '-btn ' + pre + '-btn-l';
-
-        _btnBg(btnLeft);
-
-        btnLeft.addEventListener('touchstart', _left);
-
-        e.appendChild(btnLeft);
-    }
-
-    /**
-     * render right motion
-     */
-    function _motionRight(e) {
-
-        var s = RG._div();
-
-        s.className = pre + '-r';
-
-        _btnRight(s);
-
-        e.appendChild(s);
-    }
-
-    /**
-     * render right btn
-     */
-    function _btnRight(e) {
-
-        btnRight = RG._div();
-
-        btnRight.className = pre + '-btn ' + pre + '-btn-r';
-
-        _btnBg(btnRight);
-
-        btnRight.addEventListener('touchstart', _right);
-
-        e.appendChild(btnRight);
     }
 
     /**
@@ -153,62 +140,37 @@
     /**
      * hightlight left btn
      */
-    function _hightlightLeft() {
+    function hightlight(t) {
 
-        btnLeft.style.backgroundColor = '#ffba15';
-        btnRight.style.backgroundColor = '#8a8a8a';
-    }
-
-    /**
-     * hightlight right btn
-     */
-    function _hightlightRight() {
-
-        btnLeft.style.backgroundColor = '#8a8a8a';
-        btnRight.style.backgroundColor = '#3088e2';
-    }
-
-    /**
-     * run left
-     */
-    function _left() {
-
-        _handler(0);
-
-        _hightlightLeft();
-    }
-
-    /**
-     * run right
-     */
-    function _right() {
-
-        _handler(1);
-
-        _hightlightRight();
+        btnL.style.backgroundColor = t ? '#8a8a8a' : '#ffba15';
+        btnR.style.backgroundColor = t ? '#3088e2' : '#8a8a8a';
     }
 
     /**
      * listen touchstart event
      */
-    function _handler(type) {
+    function _handler(t) {
 
-        if (cur !== type) {
-            if (type === 1) {
-                ++combo;
+        if (curType !== t) {
+            if (t === 1) {
+                ++motion.combo;
             }
-            cur = type;
+            curType = t;
         }
     }
 
+    /**
+     * facilitate develop test
+     */
     document.onkeydown = function (e) {
 
-        if (e.keyCode === 37) {
-            _left();
-        }
-
-        if (e.keyCode === 39) {
-            _right();
+        switch (e.keyCode) {
+        case 37:
+            motion.step(0);
+            break;
+        case 39:
+            motion.step(1);
+            break;
         }
     };
 })();

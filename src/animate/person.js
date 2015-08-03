@@ -18,7 +18,7 @@
                 this.y = window.innerHeight * 0.85 - this.img.height;
 
                 if (frame % this.frame.length === 0) {
-                    RG.$observer.emit('round');
+                    RG._round();
                 }
             }
         });

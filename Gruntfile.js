@@ -25,17 +25,14 @@ module.exports = function (grunt) {
                         'src/motion.js',
                         'src/time.js',
                         'src/music.js',
-                        'src/scene/loading.js',
+                        'src/load.js',
                         'src/scene/start.js',
-                        'src/animate/extension/sky.js',
-                        'src/animate/extension/cloud.js',
-                        'src/animate/extension/ground.js',
                         'src/animate/bg.js',
                         'src/animate/person.js',
                         'src/animate/person-super.js',
                         'src/animate/person-start.js',
                         'src/animate/person-end.js',
-                        'src/utils/observer.js'
+                        'src/utils/utils.js'
                     ]
                 }
             }

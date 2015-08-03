@@ -5,27 +5,20 @@
      */
     var RG = window.RunningGame,
         point = RG.$point = {},
-        pre,
-        pt, nick, dis, res;
+        pre = '',
+        ele = {},
+        nick = {},
+        dis = {},
+        res = {};
 
     /**
      * initialize point space
      */
     point.init = function () {
 
-        pre = RG.$pre + '-point';
+        pre = RG.PRE + '-point';
 
-        pt = _div();
-
-        pt.className = pre;
-
-        _nick(pt);
-
-        _res(pt);
-
-        _dis(pt);
-
-        RG.$root.appendChild(pt);
+        _initDom();
     };
 
     /**
@@ -33,14 +26,9 @@
      */
     point.update = function () {
 
-        RG.$res += RG.$conf.point[RG.$grade - 1] + randomDis();
+        RG.$res += RG.$conf.point[(RG.$lastGrade || 1) - 1] + randomDis();
 
         _refresh();
-
-        function randomDis() {
-
-            return Math.random() > 0.5 ? 1 : -1;
-        }
     };
 
     /**
@@ -48,7 +36,7 @@
      */
     point.end = function () {
 
-        pt.className = pre + ' ' + pre + '-end';
+        ele.className = pre + ' ' + pre + '-end';
 
         nick.style.display = 'none';
 
@@ -65,11 +53,29 @@
     };
 
     /**
+     * initialize dom
+     */
+    function _initDom() {
+
+        ele = RG._div();
+
+        ele.className = pre;
+
+        _initNick(ele);
+
+        _initRes(ele);
+
+        _initDis(ele);
+
+        RG.$root.appendChild(ele);
+    }
+
+    /**
      * render nick
      */
-    function _nick(e) {
+    function _initNick(e) {
 
-        nick = _div();
+        nick = RG._div();
 
         nick.innerText = RG.$msg.nick;
 
@@ -81,9 +87,9 @@
     /**
      * render result preffix
      */
-    function _res(e) {
+    function _initRes(e) {
 
-        res = _span();
+        res = RG._span();
 
         e.appendChild(res);
     }
@@ -91,9 +97,9 @@
     /**
      * render distance
      */
-    function _dis(e) {
+    function _initDis(e) {
 
-        dis = _span();
+        dis = RG._span();
 
         _refresh();
 
@@ -109,18 +115,10 @@
     }
 
     /**
-     * create div
+     * get random distance
      */
-    function _div() {
+    function randomDis() {
 
-        return document.createElement('div');
-    }
-
-    /**
-     * create span
-     */
-    function _span() {
-
-        return document.createElement('span');
+        return Math.random() > 0.5 ? 1 : -1;
     }
 })();

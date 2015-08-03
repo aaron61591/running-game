@@ -12,7 +12,7 @@
 
         music.ele = RG._div();
 
-        music.ele.className = RG.$pre + '-music';
+        music.ele.className = RG.PRE + '-music';
 
         if (_disable()) {
             _off();

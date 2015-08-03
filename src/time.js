@@ -2,34 +2,53 @@
 
     var RG = window.RunningGame,
         time = RG.$time = {},
-        pre, top, second, gameTime;
+        pre = '',
+        top = {},
+        second = {},
+        gameTime = 0;
 
     /**
      * initialize time
      */
     time.init = function () {
 
-        pre = RG.$pre + '-top';
+        _initProp();
 
-        gameTime = RG.$conf.gameTime || 10000;
-
-        top = RG._div();
-
-        top.className = pre;
-
-        _second(top);
-
-        _suffix(top);
-
-        RG._insert(top);
+        _initDom();
 
         _countdown(gameTime, 100, _step, _end);
     };
 
     /**
+     * initialize property
+     */
+    function _initProp() {
+
+        pre = RG.PRE + '-top';
+
+        gameTime = RG.$conf.gameTime || 10000;
+    }
+
+    /**
+     * initialize dom
+     */
+    function _initDom() {
+
+        top = RG._div();
+
+        top.className = pre;
+
+        _initSecond(top);
+
+        _initSuffix(top);
+
+        RG._insert(top);
+    }
+
+    /**
      * time
      */
-    function _second(e) {
+    function _initSecond(e) {
 
         second = RG._span();
         second.className = pre + '-second';
@@ -40,7 +59,7 @@
     /**
      * suffix
      */
-    function _suffix(e) {
+    function _initSuffix(e) {
 
         var s = RG._span();
         s.innerText = 's';
@@ -66,7 +85,7 @@
      */
     function _end() {
 
-        RG.$observer.emit('end');
+        RG._gameover();
 
         top.className = pre + ' ' + pre + '-end';
 

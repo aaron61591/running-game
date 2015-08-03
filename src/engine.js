@@ -3,175 +3,132 @@
     /**
      * running game
      */
-    var RG = window.RunningGame = {};
+    var RG = window.RunningGame = {},
+        last = 0;
 
     /**
      * extension animation
      */
-    RG.$ext = ['Sky', 'Cloud', 'Ground'];
+    RG.EXT = ['Sky', 'Cloud', 'Ground'];
+
+    /**
+     * style preffix
+     */
+    RG.PRE = 'running-game';
 
     /**
      * ready to start
      */
     RG.start = function (opt, cb, round) {
 
-        _init(opt, cb, round);
+        if (!RG.$running) {
+            _init(opt, cb, round);
 
-        RG._loading();
-    };
-
-    /**
-     * observer ready hook
-     */
-    RG._hook = function () {
-
-        var last = 0;
-
-        RG.$observer.on('loaded', function () {
-
-            _loaded();
-        });
-
-        RG.$observer.on('start', function () {
-
-            RG.$time.init();
-
-            _start();
-        });
-
-        RG.$observer.on('end', function () {
-
-            RG.$p.unplug('person');
-            RG.$p.unplug('person-super');
-            RG._animatePersonEnd(RG.$p);
-            RG.$p.stop();
-            RG.$p.run(1);
-
-            RG.$point.end();
-
-            RG.$music.stopBg();
-            RG.$music.playOver();
-
-            setTimeout(function () {
-
-                document.body.removeChild(RG.$root);
-
-                if (RG.$cb) {
-                    RG.$cb(RG.$res);
-                }
-            }, RG.$opt.endTime || 3000);
-        });
-
-        RG.$observer.on('round', function () {
-
-            var cur = +new Date(),
-                g;
-
-            if (cur - last > 1000) {
-                last = cur;
-
-                g = RG._getGrade();
-
-                console.log('grade: ', g);
-
-                if (g === 4 && RG.$lastGrade === 5) {
-                    RG.$p.unplug('person');
-                    RG._animatePersonSuper();
-                }
-
-                if (RG.$lastGrade === 5 && g === 4) {
-                    RG.$p.unplug('person-super');
-                    RG._animatePerson();
-                }
-
-                RG.$p.opt.fps = RG.$conf.fps[g - 1];
-
-                if (RG.$round) {
-                    RG.$round(RG.$lastGrade, g);
-                }
-
-                RG.$lastGrade = g;
-            }
-        });
-    };
-
-    /**
-     * create div
-     */
-    RG._div = function () {
-
-        return document.createElement('div');
-    };
-
-    /**
-     * create span
-     */
-    RG._span = function () {
-
-        return document.createElement('span');
-    };
-
-    /**
-     * insert
-     */
-    RG._insert = function (e, f) {
-
-        if (f) {
-            f.appendChild(e);
-        } else {
-            RG.$root.appendChild(e);
+            RG._load();
         }
-    };
-
-    /**
-     * remove
-     */
-    RG._remove = function (e) {
-
-        RG.$root.removeChild(e);
     };
 
     /**
      * resource loaded
      */
-    function _loaded() {
+    RG._loaded = function () {
 
         RG.$music.init();
 
-        _runPlayer();
+        RG.$point.init();
+
+        RG.$motion.init();
 
         RG._ready();
 
-        RG.$point.init();
-    }
+        _initPlayer();
+    };
 
     /**
-     * run plauery
+     * handle start event
      */
-    function _runPlayer() {
+    RG._startRun = function () {
 
-        RG.$p = new UPlayer({
-            fps: 10
-        });
+        RG.$time.init();
 
-        _extension();
+        RG.$p.unplug('start');
 
-        RG._animateBg();
-        RG._animatePersonStart();
+        RG._animatePerson(RG.$p);
 
-        RG._insert(RG.$p.canvas);
+        RG.$p.run();
 
+        RG.$motion.combo = 0;
+    };
+
+    /**
+     * handle round event
+     */
+    RG._round = function () {
+
+        var cur = +new Date(),
+            g;
+
+        if (cur - last > 1000) {
+            last = cur;
+
+            g = RG.$motion.getGrade();
+
+            console.log('grade: ', g);
+
+            if (g === 4 && RG.$lastGrade === 5) {
+                RG.$p.unplug('person');
+                RG._animatePersonSuper();
+            }
+
+            if (RG.$lastGrade === 5 && g === 4) {
+                RG.$p.unplug('person-super');
+                RG._animatePerson();
+            }
+
+            RG.$p.opt.fps = RG.$conf.fps[g - 1];
+
+            if (RG.$round) {
+                RG.$round(RG.$lastGrade, g);
+            }
+
+            RG.$lastGrade = g;
+        }
+    };
+
+    /**
+     * handle end event
+     */
+    RG._gameover = function () {
+
+        RG.$p.unplug('person');
+        RG.$p.unplug('person-super');
+        RG._animatePersonEnd(RG.$p);
+        RG.$p.stop();
         RG.$p.run(1);
-    }
+
+        RG.$point.end();
+
+        RG.$music.stopBg();
+        RG.$music.playOver();
+
+        setTimeout(function () {
+
+            document.body.removeChild(RG.$root);
+
+            if (RG.$cb) {
+                RG.$cb(RG.$res);
+            }
+
+            RG.$running = false;
+        }, RG.$opt.endTime || 3000);
+    };
 
     /**
      * initialize props
      */
     function _init(opt, cb, round) {
 
-        RG.$opt = opt || {};
-
-        RG.$path = 'http://img.ucweb.com/s/uae/g/01/running_game/';
+        _initProp(opt, cb, round);
 
         _initExt();
 
@@ -183,11 +140,13 @@
 
         _initAudio();
 
-        RG.$cb = cb;
-        RG.$round = round;
-        RG.$grade = 1;
-        RG.$res = 0;
-        RG.$pre = 'running-game';
+        _initRoot();
+    }
+
+    /**
+     * initialize root
+     */
+    function _initRoot() {
 
         RG.$root = RG._div();
         RG.$root.id = RG.$opt.id || '';
@@ -197,20 +156,33 @@
     }
 
     /**
+     * initialize propery
+     */
+    function _initProp(opt, cb, round) {
+
+        RG.$opt = opt || {};
+        RG.$path = 'http://img.ucweb.com/s/uae/g/01/running_game/';
+        RG.$cb = cb;
+        RG.$round = round;
+        RG.$grade = 1;
+        RG.$res = 0;
+        RG.$running = true;
+    }
+
+    /**
      * initialize extention animation
      */
     function _initExt() {
 
         var ep = RG.$extPlugin = [],
-            ext = RG.$opt.extension || RG.$ext,
+            ext = RG.$opt.extension || RG.EXT,
             i = 0;
 
         while (i < ext.length) {
-            if (typeof ext[i] === 'string' && RG.$ext.indexOf(ext[i]) !== -1) {
+            if (typeof ext[i] === 'string' && RG.EXT.indexOf(ext[i]) !== -1) {
                 ep.push({
                     zIndex: i,
                     extName: ext[i]
-                        // render: RG['$ext' + ext[i]]
                 });
             }
 
@@ -227,9 +199,9 @@
     }
 
     /**
-     * initialize extension
+     * plug extension animation
      */
-    function _extension() {
+    function _plugExt() {
 
         var i = 0;
 
@@ -293,14 +265,21 @@
     }
 
     /**
-     * start game
+     * run plauery
      */
-    function _start() {
+    function _initPlayer() {
 
-        RG.$p.unplug('start');
+        RG.$p = new UPlayer({
+            fps: 10
+        });
 
-        RG._animatePerson(RG.$p);
+        _plugExt();
 
-        RG.$p.run();
+        RG._animateBg();
+        RG._animatePersonStart();
+
+        RG._insert(RG.$p.canvas);
+
+        RG.$p.run(1);
     }
 })();

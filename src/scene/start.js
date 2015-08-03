@@ -1,20 +1,16 @@
 (function () {
 
     var RG = window.RunningGame,
-        pre, ready, inter, finger;
+        ready, finger, inter;
 
     /**
      * show game start scene
      */
     RG._ready = function () {
 
-        pre = RG.$pre;
+        _initTop();
 
-        RG._initMotion();
-
-        _ready();
-
-        _finger();
+        _initFinger();
 
         _setupListener();
     };
@@ -22,13 +18,13 @@
     /**
      * render ready title
      */
-    function _ready() {
+    function _initTop() {
 
         ready = RG._div();
 
         ready.innerText = RG.$msg.ready;
 
-        ready.className = pre + '-ready';
+        ready.className = RG.PRE + '-ready';
 
         ready.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% -200px / 225px 245px no-repeat';
 
@@ -38,44 +34,38 @@
     /**
      * render finger
      */
-    function _finger() {
+    function _initFinger() {
 
         finger = RG._div();
 
-        finger.className = pre + '-finger';
+        finger.className = RG.PRE + '-finger';
 
         var i = 0;
 
         inter = setInterval(function () {
 
             if (++i % 2) {
-                finger.style.left = 0;
-                finger.style.right = 'initial';
-                finger.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% 0% / 225px 245px no-repeat';
+                RG.$motion.step(0);
+                _changeBg(0);
             } else {
-                finger.style.left = 'initial';
-                finger.style.right = 0;
-                finger.style.background = 'url(' + RG.$imgPath + 'ready.png) 50% -100px / 225px 245px no-repeat';
+                RG.$motion.step(1);
+                _changeBg(1);
             }
-
-            RG._motionChange();
         }, 200);
 
         RG._insert(finger);
     }
 
     /**
-     * click to start
+     * change finger background
      */
-    function _start() {
+    function _changeBg(t) {
 
-        clearInterval(inter);
-
-        RG._remove(finger);
-
-        RG._remove(ready);
-
-        RG._remove(RG.$music.ele);
+        var s = finger.style;
+        s.left = t ? 'initial' : 0;
+        s.right = t ? 0 : 'initial';
+        s.background = 'url(' + RG.$imgPath + 'ready.png) 50% ' +
+            (t ? '-100px' : '0%') + ' / 225px 245px no-repeat';
     }
 
     /**
@@ -87,13 +77,19 @@
     }
 
     /**
-     *
+     * start touch handleer
      */
     function _handler() {
 
-        _start();
+        clearInterval(inter);
 
-        RG.$observer.emit('start');
+        RG._remove(finger);
+
+        RG._remove(ready);
+
+        RG._remove(RG.$music.ele);
+
+        RG._startRun();
 
         document.body.removeEventListener('touchstart', _handler);
     }
