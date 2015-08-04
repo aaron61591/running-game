@@ -9,7 +9,7 @@
 
         RG.$p.plugCard({
             zIndex: 1001,
-            hash: 'person-super',
+            id: 'person-super',
             src: RG.$imgPath + 'person.png',
             frame: [0, 1, 2, 7, 5, 2, 1],
             pulse: function (ctx, frame) {
