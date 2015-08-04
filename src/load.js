@@ -86,9 +86,7 @@
 
         finish = 0;
 
-        _loadExt();
-
-        _loadCSS();
+        _loadExt(_loadCSS);
     }
 
     /**
@@ -120,7 +118,7 @@
     /**
      * initialize extention
      */
-    function _loadExt() {
+    function _loadExt(cb) {
 
         var i = RG.$extPlugin.length;
 
@@ -128,7 +126,7 @@
             extLoaded = true;
             while (i--) {
                 if (RG.$extPlugin[i].extName) {
-                    _loadJs(RG.$extPlugin[i], _extCb(RG.$extPlugin[i]));
+                    _loadJs(RG.$extPlugin[i], _extCb(RG.$extPlugin[i]), cb);
                 }
             }
         } else {
@@ -151,18 +149,41 @@
         };
     }
 
+    var waitJs = 0;
+
     /**
      * load extention script
      */
-    function _loadJs(ext, cb) {
+    function _loadJs(ext, extCb, cb) {
+
+        ++waitJs;
 
         var s = document.createElement('script');
 
-        s.onload = cb;
-
         s.src = RG.$path + 'js/extension/' + ext.extName.toLowerCase() + '.js';
 
+        if (s.complete) {
+            _jsLoaded(extCb, cb)();
+        } else {
+            s.onload = _jsLoaded(extCb, cb);
+        }
+
         RG._insert(s, document.body);
+    }
+
+    /**
+     * extenteion script loaded
+     */
+    function _jsLoaded(extCb, cb) {
+
+        return function () {
+
+            extCb();
+
+            if (!--waitJs) {
+                cb();
+            }
+        };
     }
 
     /**
