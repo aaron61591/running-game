@@ -9,7 +9,7 @@
 
         RG.$p.plugCard({
             zIndex: 1001,
-            hash: 'start',
+            id: 'start',
             src: RG.$imgPath + 'start.png',
             frame: 1,
             scale: 0.5,
