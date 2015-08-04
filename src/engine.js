@@ -120,7 +120,7 @@
             }
 
             RG.$running = false;
-        }, RG.$opt.endTime || 3000);
+        }, RG.$opt.conf.endTime || 3000);
     };
 
     /**

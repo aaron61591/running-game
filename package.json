@@ -1,7 +1,7 @@
 {
     "name": "running-game",
     "version": "0.1.1",
-    "description": "Running Game Base on UPlayer",
+    "description": "Running Game Base on UPlayer by U.E.M. Team",
     "devDependencies": {
         "grunt": "~0.4.2",
         "grunt-contrib-jshint": "~0.6.3",
