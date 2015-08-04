@@ -135,6 +135,7 @@
                     _extCb(RG.$extPlugin[i])();
                 }
             }
+            cb();
         }
     }
 
