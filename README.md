@@ -17,8 +17,10 @@ H5 Running Game Base on UPlayer by U.E.M. Team.
 	var opt = {}; // game option
 
 	RunningGame.start(opt, function(point) {
-
         console.log('cool!u ran: ', point);
+    }, function (lg, cg) {
+    	console.log('last grade is ', lg);
+		console.log('current grade is ', cg);
     });
     
 ## Option Reference
