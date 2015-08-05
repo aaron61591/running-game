@@ -53,6 +53,10 @@ H5 Running Game Base on UPlayer by U.E.M. Team.
 
 	FPS of each prade // [10, 20, 30, 40, 70]
 
+### audio
+
+	Whether audio enable // true
+
 ### audio.bg
 
 	Background music url

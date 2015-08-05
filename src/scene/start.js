@@ -87,7 +87,9 @@
 
         RG._remove(ready);
 
-        RG._remove(RG.$music.ele);
+        if (RG.$audio) {
+            RG._remove(RG.$music.ele);
+        }
 
         RG._startRun();
 

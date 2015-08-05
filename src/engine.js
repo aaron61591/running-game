@@ -33,7 +33,9 @@
      */
     RG._loaded = function () {
 
-        RG.$music.init();
+        if (RG.$audio) {
+            RG.$music.init();
+        }
 
         RG.$point.init();
 
@@ -108,8 +110,10 @@
 
         RG.$point.end();
 
-        RG.$music.stopBg();
-        RG.$music.playOver();
+        if (RG.$audio) {
+            RG.$music.stopBg();
+            RG.$music.playOver();
+        }
 
         setTimeout(function () {
 
@@ -120,7 +124,7 @@
             }
 
             RG.$running = false;
-        }, RG.$opt.conf.endTime || 3000);
+        }, RG.$conf.endTime || 3000);
     };
 
     /**
@@ -222,8 +226,6 @@
             'loading.png',
             'bg.png',
             'end.png',
-            'music-on.png',
-            'music-off.png',
             'person.png',
             'ready.png',
             'start.png'
@@ -258,10 +260,24 @@
      */
     function _initAudio() {
 
-        RG.$audio = RG.$opt.audio || {
-            bg: RG.$path + 'audio/bg.mp3',
-            over: RG.$path + 'audio/over.mp3'
-        };
+        var flag = false;
+        if (RG.$opt.audio === undefined || RG.$opt.audio === true) {
+            RG.$audio = {
+                bg: RG.$path + 'audio/bg.mp3',
+                over: RG.$path + 'audio/over.mp3'
+            };
+            flag = true;
+        } else if (RG.$opt.audio !== false) {
+            RG.$audio = RG.$opt.audio;
+            flag = true;
+        }
+
+        if (flag) {
+            RG.$img = RG.$img.concat([
+                'music-on.png',
+                'music-off.png'
+            ]);
+        }
     }
 
     /**
