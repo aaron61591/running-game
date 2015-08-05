@@ -74,7 +74,6 @@ H5 Running Game Base on UPlayer by U.E.M. Team.
 	CSS resource url
 	
 ### extension
-
 	Extension animation array // ['Sky', 'Cloud', 'Ground']
 	you can define custom animations as follow:
 	......
@@ -89,6 +88,7 @@ H5 Running Game Base on UPlayer by U.E.M. Team.
         ]
 	}
 
+- [click here get contrib extension](https://github.com/aaron61591/running-game/tree/master/src/animate/extension)
 
 ## License
 
