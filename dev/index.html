@@ -9,10 +9,24 @@
         Running Game | U.E.M. Team
     </title>
     <link rel="shortcut icon" href="http://www.ucweb.com/favicon.ico">
+    <style type="text/css">
+    .run {
+        width: 120px;
+        height: 40px;
+        border: none;
+        background: #00a87f;
+        font-size: 18px;
+        display: block;
+        margin: 100px auto;
+        color: #fff;
+        line-height: 18px;
+        border-radius: 5px;
+    }
+    </style>
 </head>
 
 <body>
-    <button onclick="run()">run</button>
+    <button onclick="run()" class="run">Again</button>
     <script type="text/javascript" src="src/animate/uplayer-0.1.0.js"></script>
     <script type="text/javascript" src="src/engine.js"></script>
     <script type="text/javascript" src="src/point.js"></script>
@@ -31,13 +45,12 @@
     <script type="text/javascript">
     window.run = function() {
 
-        window.RunningGame.start({
+        RunningGame.start({
             extension: [
                 'Sky',
                 'Cloud',
                 'Ground',
                 function(ctx, frame) {
-
                     // TODO custom animation
                 }
             ],
